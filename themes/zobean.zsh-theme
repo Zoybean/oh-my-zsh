@@ -68,7 +68,7 @@ precmd_prompt() {
 
 	RPROMPT=''
 	PROMPT="${PROMPT_LEFT}${PROMPT_MIDDLE}${PROMPT_RIGHT}"
-	PROMPT+=$'\n%F{green}%n%f@%F{yellow}%m%f:%F{blue}$(pwd_path)%B$(pwd_dir)%b%f'
+	PROMPT+=$'\n%F{green}%n%f@%F{yellow}%M%f:%F{blue}$(pwd_path)%B$(pwd_dir)%b%f'
 	PROMPT+=$'\n%F{magenta}yes, %B'"${_PROMPT_USER_TITLE}"'%b%F{magenta}?%f : '
 }
 precmd_functions+=(precmd_prompt)

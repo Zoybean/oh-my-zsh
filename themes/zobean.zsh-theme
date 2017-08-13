@@ -25,7 +25,7 @@ setopt PROMPT_SUBST
 # Update the prompt per-second
 TMOUT=1
 TRAPALRM() {
-	zle reset-prompt
+    zle reset-prompt
 }
 
 # Git status in prompt
@@ -38,20 +38,20 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%F{blue})"
 # Functional counterpart to zsh's '%1/' prompt expansion
 pwd_path() {
     pwd | sed -E 's://+:/:g;s:^(.*/)([^/]*)/?$:\1:' # treats / as path
-	#pwd | sed -E 's://+:/:g;s:[^/]+/?$::;s:^/$::' # treats / as last directory
+    #pwd | sed -E 's://+:/:g;s:[^/]+/?$::;s:^/$::' # treats / as last directory
 } 
 # Keep only the last directory in path
 # Functional equivalent to zsh's '%1/' prompt expansion
 pwd_dir() {
     pwd | sed -E 's://+:/:g;s:^(.*/)([^/]*)/?$:\2:' # treats / as path
-	#pwd | sed -E 's://+:/:g;s:^.*/([^/]+)/?:\1:' # treats / as last directory
+    #pwd | sed -E 's://+:/:g;s:^.*/([^/]+)/?:\1:' # treats / as last directory
 } 
 
 precmd_prompt() {
-	#local ErrCol="%(?:%F{green}:%F{red})"
+    #local ErrCol="%(?:%F{green}:%F{red})"
     local ExitCode=$?
     local Errstat=''
-	local ErrCol
+    local ErrCol
     case $ExitCode in
         0)
             ErrCol="%F{green}"
@@ -64,32 +64,32 @@ precmd_prompt() {
             Errstat=" %Fexit: (${ExitCode})%f"
             ;;
     esac    
-	# There is an easier way to do this, using sed, but I can't be bothered. Zsh expansion is convenient-ish
-	# Match all zsh-style formatting strings. Not great.
-	local RawNg='%([BSUbfksu]|[FK]{*})' #non-greedy match - for when %F or %K is followed by {}
-	local RawGr='%([FK])'               #greedy match - for the other case. no following {}
-	
+    # There is an easier way to do this, using sed, but I can't be bothered. Zsh expansion is convenient-ish
+    # Match all zsh-style formatting strings. Not great.
+    local RawNg='%([BSUbfksu]|[FK]{*})' #non-greedy match - for when %F or %K is followed by {}
+    local RawGr='%([FK])'               #greedy match - for the other case. no following {}
+    
     local TimeNow="%D{%H:%M:%S}"
-	local TimeFix="${(%%):-"${TimeNow}"}" # expand it early, so it doesn't update
-	local PromptLast="${ErrCol}[%F%B${TimeFix}%b${ErrCol}]%f " # finish time of last command
-	local PromptNow="%F%B[${TimeNow}]%b%f " # start time of this command (current time)
-	local PromptGit="$(git_prompt_info)"
-	local PromptDate="%F%D{%Y-%m-%d}%f "
+    local TimeFix="${(%%):-"${TimeNow}"}" # expand it early, so it doesn't update
+    local PromptLast="${ErrCol}[%F%B${TimeFix}%b${ErrCol}]%f " # finish time of last command
+    local PromptNow="%F%B[${TimeNow}]%b%f " # start time of this command (current time)
+    local PromptGit="$(git_prompt_info)"
+    local PromptDate="%F%D{%Y-%m-%d}%f "
 
-	local PromptLeft="${PromptLast}${PromptNow}${PromptGit}${Errstat}"
-	local PromptRight="${PromptDate}"
-	local BareLeft="${${(S)PromptLeft//$~RawNg}//$~RawGr}"
-	local BareRight="${${(S)PromptRight//$~RawNg}//$~RawGr}"
-	
+    local PromptLeft="${PromptLast}${PromptNow}${PromptGit}${Errstat}"
+    local PromptRight="${PromptDate}"
+    local BareLeft="${${(S)PromptLeft//$~RawNg}//$~RawGr}"
+    local BareRight="${${(S)PromptRight//$~RawNg}//$~RawGr}"
+    
     local Offset=3 # currently, it will creep up if you use a number less than 3
-	# Calculate the padding required to right-pad the date
-	local PadWidth="$((${COLUMNS}-${Offset}-${#:-${(%):-$BareLeft$BareRight}}))"
+    # Calculate the padding required to right-pad the date
+    local PadWidth="$((${COLUMNS}-${Offset}-${#:-${(%):-$BareLeft$BareRight}}))"
     local PromptFill="${(r:$PadWidth:: :)}" # pad with spaces
 
-	RPROMPT=''
-	PROMPT="${PromptLeft}${PromptFill}${PromptRight}"
-	PROMPT+=$'\n%F{green}%n%f@%F{yellow}%M%f:%F{blue}$(pwd_path)%B$(pwd_dir)%b%f'
-	PROMPT+=$'\n%F{magenta}yes, %B'"${_PROMPT_USER_TITLE}"'%b%F{magenta}?%f : '
+    RPROMPT=''
+    PROMPT="${PromptLeft}${PromptFill}${PromptRight}"
+    PROMPT+=$'\n%F{green}%n%f@%F{yellow}%M%f:%F{blue}$(pwd_path)%B$(pwd_dir)%b%f'
+    PROMPT+=$'\n%F{magenta}yes, %B'"${_PROMPT_USER_TITLE}"'%b%F{magenta}?%f : '
 }
 precmd_functions+=(precmd_prompt)
 

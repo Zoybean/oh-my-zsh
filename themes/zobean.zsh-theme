@@ -72,7 +72,7 @@ precmd_prompt() {
     local TIME_NOW="%D{%H:%M:%S}"
 	local TIME_FIXED="${(%%):-"${TIME_NOW}"}" # expand it early, so it doesn't update
 	local PROMPT_LAST="${ERRCOL}[%F%B${TIME_FIXED}%b${ERRCOL}]%f " # finish time of last command
-	local PROMPT_NOW="%F%B[${TIME_FIXED}]%b%f " # start time of this command (current time)
+	local PROMPT_NOW="%F%B[${TIME_NOW}]%b%f " # start time of this command (current time)
 	local PROMPT_GIT="$(git_prompt_info)"
 	local PROMPT_DATE="%F%D{%Y-%m-%d}%f "
 

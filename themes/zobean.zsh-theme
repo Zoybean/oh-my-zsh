@@ -38,7 +38,7 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%F{blue})"
 # Functional counterpart to zsh's '%1/' prompt expansion
 pwd_path() {
     pwd | sed -E 's://+:/:g;s:^(.*/)([^/]*)/?$:\1:' # treats / as path
-    #pwd | sed -E 's://+:/:g;s:[^/]+/?$::;s:^/$::' # treats / as last directory
+	#pwd | sed -E 's://+:/:g;s:[^/]+/?$::;s:^/$::' # treats / as last directory
 } 
 # Keep only the last directory in path
 # Functional equivalent to zsh's '%1/' prompt expansion

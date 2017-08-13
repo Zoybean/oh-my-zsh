@@ -37,57 +37,57 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%F{blue})"
 # Keep up to the last directory in path
 # Functional counterpart to zsh's '%1/' prompt expansion
 pwd_path() {
-    #pwd | sed -E 's://+:/:g;s:^(.*/)([^/]*)/?$:\1:' # treats / as path
-	pwd | sed -E 's://+:/:g;s:[^/]+/?$::;s:^/$::' # treats / as last directory
+    pwd | sed -E 's://+:/:g;s:^(.*/)([^/]*)/?$:\1:' # treats / as path
+	#pwd | sed -E 's://+:/:g;s:[^/]+/?$::;s:^/$::' # treats / as last directory
 } 
 # Keep only the last directory in path
 # Functional equivalent to zsh's '%1/' prompt expansion
 pwd_dir() {
-    #pwd | sed -E 's://+:/:g;s:^(.*/)([^/]*)/?$:\2:' # treats / as path
-	pwd | sed -E 's://+:/:g;s:^.*/([^/]+)/?:\1:' # treats / as last directory
+    pwd | sed -E 's://+:/:g;s:^(.*/)([^/]*)/?$:\2:' # treats / as path
+	#pwd | sed -E 's://+:/:g;s:^.*/([^/]+)/?:\1:' # treats / as last directory
 } 
 
 precmd_prompt() {
-	#local ERRCOL="%(?:%F{green}:%F{red})"
-    local EXIT_CODE=$?
-    local ERRSTAT=''
-	local ERRCOL
-    case $EXIT_CODE in
+	#local ErrCol="%(?:%F{green}:%F{red})"
+    local ExitCode=$?
+    local Errstat=''
+	local ErrCol
+    case $ExitCode in
         0)
-            ERRCOL="%F{green}"
+            ErrCol="%F{green}"
             ;;
         1)
-            ERRCOL="%F{red}"
+            ErrCol="%F{red}"
             ;;
         *)
-            ERRCOL="%F{red}"
-            ERRSTAT=" %Fexit: (${EXIT_CODE})%f"
+            ErrCol="%F{red}"
+            Errstat=" %Fexit: (${ExitCode})%f"
             ;;
     esac    
 	# There is an easier way to do this, using sed, but I can't be bothered. Zsh expansion is convenient-ish
 	# Match all zsh-style formatting strings. Not great.
-	local RAW_NG='%([BSUbfksu]|[FK]{*})' #non-greedy match - for when %F or %K is followed by {}
-	local RAW_GR='%([FK])'               #greedy match - for the other case. no following {}
+	local RawNg='%([BSUbfksu]|[FK]{*})' #non-greedy match - for when %F or %K is followed by {}
+	local RawGr='%([FK])'               #greedy match - for the other case. no following {}
 	
-    local TIME_NOW="%D{%H:%M:%S}"
-	local TIME_FIXED="${(%%):-"${TIME_NOW}"}" # expand it early, so it doesn't update
-	local PROMPT_LAST="${ERRCOL}[%F%B${TIME_FIXED}%b${ERRCOL}]%f " # finish time of last command
-	local PROMPT_NOW="%F%B[${TIME_NOW}]%b%f " # start time of this command (current time)
-	local PROMPT_GIT="$(git_prompt_info)"
-	local PROMPT_DATE="%F%D{%Y-%m-%d}%f "
+    local TimeNow="%D{%H:%M:%S}"
+	local TimeFix="${(%%):-"${TimeNow}"}" # expand it early, so it doesn't update
+	local PromptLast="${ErrCol}[%F%B${TimeFix}%b${ErrCol}]%f " # finish time of last command
+	local PromptNow="%F%B[${TimeNow}]%b%f " # start time of this command (current time)
+	local PromptGit="$(git_prompt_info)"
+	local PromptDate="%F%D{%Y-%m-%d}%f "
 
-	local PROMPT_LEFT="${PROMPT_LAST}${PROMPT_NOW}${PROMPT_GIT}${ERRSTAT}"
-	local PROMPT_RIGHT="${PROMPT_DATE}"
-	local BARE_LEFT="${${(S)PROMPT_LEFT//$~RAW_NG}//$~RAW_GR}"
-	local BARE_RIGHT="${${(S)PROMPT_RIGHT//$~RAW_NG}//$~RAW_GR}"
+	local PromptLeft="${PromptLast}${PromptNow}${PromptGit}${Errstat}"
+	local PromptRight="${PromptDate}"
+	local BareLeft="${${(S)PromptLeft//$~RawNg}//$~RawGr}"
+	local BareRight="${${(S)PromptRight//$~RawNg}//$~RawGr}"
 	
-    local OFFSET=3 # currently, it will creep up if you use a number less than 3
+    local Offset=3 # currently, it will creep up if you use a number less than 3
 	# Calculate the padding required to right-pad the date
-	local PAD_WIDTH="$((${COLUMNS}-${OFFSET}-${#:-${(%):-$BARE_LEFT$BARE_RIGHT}}))"
-    local PROMPT_FILL="${(r:$PAD_WIDTH:: :)}" # pad with spaces
+	local PadWidth="$((${COLUMNS}-${Offset}-${#:-${(%):-$BareLeft$BareRight}}))"
+    local PromptFill="${(r:$PadWidth:: :)}" # pad with spaces
 
 	RPROMPT=''
-	PROMPT="${PROMPT_LEFT}${PROMPT_FILL}${PROMPT_RIGHT}"
+	PROMPT="${PromptLeft}${PromptFill}${PromptRight}"
 	PROMPT+=$'\n%F{green}%n%f@%F{yellow}%M%f:%F{blue}$(pwd_path)%B$(pwd_dir)%b%f'
 	PROMPT+=$'\n%F{magenta}yes, %B'"${_PROMPT_USER_TITLE}"'%b%F{magenta}?%f : '
 }

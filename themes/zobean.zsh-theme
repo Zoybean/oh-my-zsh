@@ -19,7 +19,8 @@ _PROMPT_USER_TITLE="princess"
 #_PROMPT_USER_TITLE="my queen"
 #_PROMPT_USER_TITLE="your highness"
 # }}}
-# Body {{{
+# Misc {{{
+# Allow zsh substitution in prompt
 setopt PROMPT_SUBST
 
 # Update the prompt per-second
@@ -27,14 +28,16 @@ TMOUT=1
 TRAPALRM() {
     zle reset-prompt
 }
-
-# Git status in prompt
+# }}}
+# Git status in prompt {{{
 ZSH_THEME_GIT_PROMPT_PREFIX="%B%F{blue}git:(%F{red}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%f%b"
 ZSH_THEME_GIT_PROMPT_DIRTY="%F{yellow}*%F{blue})%f"
 ZSH_THEME_GIT_PROMPT_CLEAN="%F{blue})%f"
 ZSH_THEME_GIT_PROMPT_AHEAD="%F{yellow}^%f"
 ZSH_THEME_GIT_PROMPT_BEHIND="%F{green}v%f"
+# }}}
+# Path Formatting {{{
 # Keep up to the last directory in path
 # Functional counterpart to zsh's '%1/' prompt expansion
 pwd_path() {
@@ -47,7 +50,8 @@ pwd_dir() {
     pwd | sed -E 's://+:/:g;s:^(.*/)([^/]*)/?$:\2:' # treats / as path
     #pwd | sed -E 's://+:/:g;s:^.*/([^/]+)/?:\1:' # treats / as last directory
 } 
-
+# }}}
+# Prompt Function {{{
 precmd_prompt() {
     #local ErrCol="%(?:%F{green}:%F{red})"
     local ExitCode=$?

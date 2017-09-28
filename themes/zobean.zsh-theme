@@ -34,8 +34,8 @@ ZSH_THEME_GIT_PROMPT_PREFIX="%B%F{blue}git:(%F{red}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%f%b"
 ZSH_THEME_GIT_PROMPT_DIRTY="%F{yellow}*%F{blue})%f"
 ZSH_THEME_GIT_PROMPT_CLEAN="%F{blue})%f"
-ZSH_THEME_GIT_PROMPT_AHEAD="%F{yellow}^%f"
-ZSH_THEME_GIT_PROMPT_BEHIND="%F{green}v%f"
+ZSH_THEME_GIT_PROMPT_AHEAD="%F{yellow}↑%f"
+ZSH_THEME_GIT_PROMPT_BEHIND="%F{green}↓%f"
 # }}}
 # Path Formatting {{{
 # Keep up to the last directory in path

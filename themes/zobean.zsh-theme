@@ -31,9 +31,10 @@ TRAPALRM() {
 # Git status in prompt
 ZSH_THEME_GIT_PROMPT_PREFIX="%B%F{blue}git:(%F{red}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%f%b"
-ZSH_THEME_GIT_PROMPT_DIRTY="%F{yellow}*%F{blue})"
-ZSH_THEME_GIT_PROMPT_CLEAN="%F{blue})"
-
+ZSH_THEME_GIT_PROMPT_DIRTY="%F{yellow}*%F{blue})%f"
+ZSH_THEME_GIT_PROMPT_CLEAN="%F{blue})%f"
+ZSH_THEME_GIT_PROMPT_AHEAD="%F{yellow}^%f"
+ZSH_THEME_GIT_PROMPT_BEHIND="%F{green}v%f"
 # Keep up to the last directory in path
 # Functional counterpart to zsh's '%1/' prompt expansion
 pwd_path() {
@@ -73,7 +74,10 @@ precmd_prompt() {
     local TimeFix="${(%%):-"${TimeNow}"}" # expand it early, so it doesn't update
     local PromptLast="${ErrCol}[%F%B${TimeFix}%b${ErrCol}]%f " # finish time of last command
     local PromptNow="%F%B[${TimeNow}]%b%f " # start time of this command (current time)
-    local PromptGit="$(git_prompt_info)"
+    local GitStat="$(git_prompt_info)"
+    local GitBehind="$(git_prompt_behind)"
+    local GitAhead="$(git_prompt_ahead)"
+    local PromptGit="${GitStat}${GitAhead}${GitBehind}"
     local PromptDate="%F%D{%Y-%m-%d}%f "
 
     local PromptLeft="${PromptLast}${PromptNow}${PromptGit}${Errstat}"

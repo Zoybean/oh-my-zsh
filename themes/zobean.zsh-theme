@@ -92,11 +92,6 @@ precmd_prompt() {
     PROMPT+=$'\n%F{magenta}yes, %B'"${_PROMPT_USER_TITLE}"'%b%F{magenta}?%f : '
 }
 precmd_functions+=(precmd_prompt)
-
-function err_status() {
-}
-
-
 # }}}
 # Postamble {{{
 # This is specifically to allow for cool vim folding.
